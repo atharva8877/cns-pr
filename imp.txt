@@ -1,0 +1,187 @@
+IMP FILE - SHORT EXPLANATION OF ALL ASSIGNMENTS
+
+--------------------------------------------------
+Assignment 1: Classical Ciphers
+--------------------------------------------------
+Core concept:
+- Caesar Cipher
+- Vigenere Cipher
+- Playfair Cipher
+- Rail Fence Cipher
+- Row/Column Transposition Cipher
+
+1) Caesar Cipher
+Procedure:
+- Choose a shift value (for example 3).
+- Replace each letter with a letter shifted forward by the key value.
+- For decryption, shift backward by the same amount.
+- It is a monoalphabetic substitution cipher, which means each letter is replaced by another fixed letter.
+
+2) Vigenere Cipher
+Procedure:
+- Use a keyword such as LEMON.
+- Repeat the key to match the length of the plaintext.
+- For each letter, shift by the corresponding key letter value.
+- Decryption uses the same process in reverse by subtracting the key shift.
+- It is stronger than Caesar because the shift changes with position.
+
+3) Playfair Cipher
+Procedure:
+- Build a 5x5 key square using the keyword and remaining alphabet letters.
+- Remove duplicate letters and combine I/J.
+- Split plaintext into pairs.
+- If a pair has same letters, insert X between them.
+- Apply Playfair rules:
+  * same row -> shift right/left
+  * same column -> shift down/up
+  * rectangle -> swap columns
+- Decryption reverses the same rules.
+
+4) Rail Fence Cipher
+Procedure:
+- Write plaintext diagonally across a number of rails.
+- Read row by row to form ciphertext.
+- For decryption, reconstruct the zigzag pattern and read the letters back in original order.
+- This is a transposition cipher because the letters are rearranged, not substituted.
+
+5) Row/Column Transposition Cipher
+Procedure:
+- Write the plaintext in rows of a fixed column width (key-based width).
+- Rearrange the columns according to the key order.
+- Read the columns in the new order to get ciphertext.
+- Decryption reverses the column order and reconstructs the original row arrangement.
+- This is a transposition cipher because positions of letters change, not the letters themselves.
+
+--------------------------------------------------
+Assignment 3: RSA Timing
+--------------------------------------------------
+Core concept:
+- RSA key generation
+- Encryption using public key
+- Decryption using private key
+- Time measurement for each step
+
+Procedure:
+- Choose two large prime numbers p and q.
+- Compute n = p * q and Euler's totient.
+- Choose public exponent e = 65537.
+- Compute private exponent d using modular inverse.
+- Public key = (n, e), private key = (n, d).
+- Encrypt message m by c = m^e mod n.
+- Decrypt by m = c^d mod n.
+- Measure time taken for key generation, encryption, and decryption.
+- This is a textbook demonstration of RSA timing and is not secure for real systems without padding.
+
+--------------------------------------------------
+Assignment 4: Custom Cipher (Feistel-like Block Cipher)
+--------------------------------------------------
+Core concept:
+- Feistel network
+- Block cipher design
+- Reversible encryption/decryption
+- Padding and unpadding
+
+Procedure:
+- Divide data into 8-byte blocks.
+- Split each block into left and right halves.
+- Apply multiple Feistel rounds using a round function based on the key and round number.
+- XOR the left half with a hash-based function of the right half.
+- Swap halves after each round.
+- Decryption runs the rounds in reverse order.
+- Add padding before encryption so the last block is complete.
+- Remove padding after decryption.
+- This demonstrates how reversible block ciphers work, but it is not secure enough for real cryptography.
+
+--------------------------------------------------
+Assignment 5: Diffie-Hellman MITM Attack
+--------------------------------------------------
+Core concept:
+- Diffie-Hellman key exchange
+- Man-in-the-middle attack
+- Shared secret exposure
+
+Procedure:
+- Both parties agree on a prime modulus and generator.
+- Each side chooses a secret private value.
+- Each computes a public value and exchanges it.
+- Both derive the same shared secret using the exchanged values.
+- In MITM attack, an attacker intercepts the public values and creates separate keys with each party.
+- The attacker then decrypts and re-encrypts messages so both users think they are communicating privately.
+
+--------------------------------------------------
+Assignment 6: SHA-1 Digest and Avalanche Effect
+--------------------------------------------------
+Core concept:
+- Hashing
+- SHA-1 digest
+- Message modification detection
+
+Procedure:
+- Input a message.
+- Compute SHA-1 hash using hashlib.sha1().
+- Change the message slightly (for example add one space).
+- Compute the hash again.
+- Compare the two hashes.
+- If even one small change is made, the output digest changes completely.
+- This shows the avalanche effect.
+- SHA-1 is educational here, but not recommended for modern secure applications.
+
+--------------------------------------------------
+Assignment 7: Digital Signature using DSA
+--------------------------------------------------
+Core concept:
+- DSA (Digital Signature Algorithm)
+- Public/private keys
+- Signature generation
+- Signature verification
+
+Procedure:
+- Generate DSA domain parameters p, q, g.
+- Choose a private key x.
+- Compute public key y = g^x mod p.
+- Hash the message.
+- Choose a random nonce k.
+- Compute r and s values from the DSA formulas.
+- Sign the message using the private key.
+- To verify:
+  * compute w = s^-1 mod q
+  * compute u1 and u2
+  * compute v = (g^u1 * y^u2 mod p) mod q
+  * if v == r, the signature is valid
+- If the message is changed, verification fails.
+- This proves integrity and authenticity.
+
+--------------------------------------------------
+Assignment 9: Secure Image Transfer with AES-GCM
+--------------------------------------------------
+Core concept:
+- Secure transmission of data
+- AES-GCM authenticated encryption
+- Integrity and confidentiality
+- Nonce and tag verification
+
+Procedure:
+- Generate or load a shared 32-byte AES key.
+- Read the image file bytes.
+- Create a random nonce.
+- Encrypt the image using AES-GCM with the nonce and a fixed associated data string.
+- Send the message as: 4-byte length + nonce + ciphertext + tag.
+- Receiver reads the length and full payload.
+- Splits nonce and ciphertext.
+- Verifies authentication tag.
+- If valid, decrypts the image.
+- If tag fails, the receiver rejects the message as tampered.
+- This ensures both confidentiality and integrity of the image during transfer.
+
+--------------------------------------------------
+Summary
+--------------------------------------------------
+These assignments show the basic ideas of:
+- substitution and transposition ciphers
+- asymmetric encryption (RSA)
+- key exchange (Diffie-Hellman)
+- hashing (SHA-1)
+- digital signatures (DSA)
+- secure authenticated encryption (AES-GCM)
+
+All of them are important foundations of modern cryptography and security systems.
